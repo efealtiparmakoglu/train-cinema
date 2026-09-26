@@ -20,6 +20,10 @@ The full running gear: cylinders, crossheads, main + side rods, coupled drivers.
 ![on](renders/on_detay.png)
 Smokebox door, buffer beam, pony truck and cylinder block. — *Duman kutusu kapağı, tampon kirişi, pony takım ve silindir bloğu.*
 
+### 🚃 Yolcu vagonu — kemerli çatı
+![vagon](renders/vagon_yolcu.png)
+`vagon_kur("yolcu")` — arched roof, window band with mullions, doors, buffer beams; axles roll with the same no-slip law. — *Kemerli çatı, dikmeli pencere bandı, kapılar, tampon kirişleri; dingiler aynı kaysız yasayla döner.*
+
 ### ⚙️ Çalışma animasyonu
 ![calisma](renders/calisma.gif)
 *36 frames at 12 fps — wheels roll, quartered cranks pump the pistons, chimney breathes. Rotasyon = kaysız yuvarlanma: θ = mesafe / teker yarıçapı.*
@@ -56,7 +60,11 @@ python3 tests/verify.py
 blender --background --python tren_render.py -- --scene scenes/studyo.json
 HIZLI=1 blender --background --python tren_render.py -- --scene scenes/yan_cephe.json
 blender --background --python tren_render.py -- --scene scenes/calisma.json --gif 36 --fps 12
+# tek vagon stüdyo çekimi
+blender --background --python tren_render.py -- --scene scenes/vagon_yolcu.json
 ```
+
+Vagon tipleri: `vagon_kur(ad, "yolcu", boy)` / `vagon_kur(ad, "yuk", boy)` — railway-cinema bu fonksiyonla tren kurguluyor.
 
 **Kardeş projeler:** [`rail-cinema`](https://github.com/efealtiparmakoglu/rail-cinema) bu lokomotifin hattını üretir; [`railway-cinema`](https://github.com/efealtiparmakoglu/railway-cinema) ikisini birleştirir.
 

@@ -154,6 +154,18 @@ def main():
     refs = tren.kur()
     tren.poz(refs, cfg.get("theta", 0.0))
 
+    # sahnede tek vagon istenirse: cfg["solo_vagon"] = {"tip":..., "boy":...}
+    solo = cfg.get("solo_vagon")
+    if solo:
+        # lokomotifi cikar (render disina tasi)
+        refs["kok"].location = (0, 0, -200)
+        for p in refs["duman"]:
+            p.location = (0, 0, -200)
+        vkok, vteker, vboy = tren.vagon_kur("SoloVagon",
+                                            solo.get("tip", "yolcu"),
+                                            solo.get("boy", 8.6))
+        tren.vagon_pozu(vteker, 0.0)
+
     cam_cfg = cfg["camera"]
     cam_obj = kamera_kur(cam_cfg["position"], cam_cfg["look_at"],
                          cam_cfg.get("lens", 50))

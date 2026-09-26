@@ -1,0 +1,51 @@
+{
+  "output": "renders/vagon_yolcu.png",
+  "theta": 0.0,
+  "solo_vagon": {
+    "tip": "yolcu",
+    "boy": 8.6
+  },
+  "fon": {
+    "color": [
+      0.01,
+      0.011,
+      0.014
+    ],
+    "strength": 1.0
+  },
+  "zemin": {
+    "color": [
+      0.075,
+      0.075,
+      0.08
+    ],
+    "roughness": 0.45,
+    "metalik": 0.0
+  },
+  "isik": {
+    "ana": 3600,
+    "dolgu": 700,
+    "rim": 4200,
+    "mekanik": 1100
+  },
+  "camera": {
+    "position": [
+      11.5,
+      -12,
+      3.0
+    ],
+    "look_at": [
+      0,
+      0,
+      1.5
+    ],
+    "lens": 45
+  },
+  "render": {
+    "width": 1600,
+    "height": 900,
+    "samples": 160,
+    "exposure": 0.35,
+    "look": "Medium High Contrast"
+  }
+}

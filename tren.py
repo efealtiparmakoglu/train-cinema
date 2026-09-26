@@ -290,3 +290,89 @@ def duman_pozu(refs, t, hiz=1.0):
                         0.85 * (1.0 - faz) ** 1.5
     for p in refs["duman"]:
         p.visible_shadow = False
+
+
+# ---------------------------------------------------------------- vagonlar
+
+VAGON_TEKER_R = 0.42
+
+
+def vagon_kur(ad, tip="yolcu", boy=8.6):
+    """Yolcu / yuk vagonu. Origin: ray basi ustu (teker alti z=0).
+    Doner: (kok, teker_refs_sozlugu, boy). Teker bos nesneleri doner.
+    MAT kur() ile doldurulmus olmali."""
+    kok = bpy.data.objects.new(ad, None)
+    bpy.context.collection.objects.link(kok)
+    once = set(bpy.data.objects)
+
+    jant = MAT["JantCelik"]
+    ic = MAT["TekerKirmizi"]
+    celik = MAT["Celik"]
+    teker_refs = {}
+    dingi_x = (-boy * 0.33, boy * 0.33)
+    for i, wx in enumerate(dingi_x):
+        for taraf, ys in (("sol", 0.715), ("sag", -0.715)):
+            t = teker_kur(f"{ad}_T{i}_{taraf}", wx, VAGON_TEKER_R,
+                          VAGON_TEKER_R, 0.09, ys, jant, ic)
+            t.parent = None
+            t.parent = kok
+            teker_refs[f"{i}_{taraf}"] = t
+
+    zasa = 1.05  # sas alti
+    kutu(f"{ad}_Sasi", (0, 0, zasa), (boy, 1.9, 0.12), celik)
+
+    if tip == "yolcu":
+        govde = mat_yap("VagonYesil", (0.045, 0.075, 0.045), rough=0.4)
+        kutu(f"{ad}_Govde", (0, 0, zasa + 1.35), (boy, 2.35, 2.15), govde)
+        # kemerli cati: yatik silindir
+        cati = silindir(f"{ad}_Cati", (0, 0, zasa + 2.42), 1.18, boy * 0.99,
+                        mat_yap("CatiGri", (0.06, 0.065, 0.07), rough=0.5),
+                        eksen="X")
+        cati.scale = (1.0, 1.0, 0.45)
+        # pencere bandi: iki yanda koyu cam
+        cam = MAT["Cam"]
+        for ys in (1.19, -1.19):
+            kutu(f"{ad}_Pencere{ys}", (0, ys, zasa + 1.75),
+                 (boy * 0.86, 0.04, 0.62), cam)
+            # pencere dikmeler
+            for k in range(7):
+                px = -boy * 0.38 + k * boy * 0.127
+                kutu(f"{ad}_Dikme{ys}{k}", (px, ys, zasa + 1.75),
+                     (0.07, 0.07, 0.66), govde)
+        # kapi panelleri
+        for xs in (-boy * 0.30, boy * 0.30):
+            for ys in (1.19, -1.19):
+                kutu(f"{ad}_Kapi{xs}{ys}", (xs, ys * 1.005, zasa + 1.05),
+                     (0.62, 0.03, 1.5), mat_yap("VagonKapi", (0.03, 0.05, 0.035),
+                                                rough=0.45))
+    else:  # yuk (kapali kutu)
+        govde = mat_yap("VagonPas", (0.14, 0.055, 0.03), rough=0.65)
+        kutu(f"{ad}_Govde", (0, 0, zasa + 1.15), (boy * 0.94, 2.3, 1.75), govde)
+        kutu(f"{ad}_Cati", (0, 0, zasa + 2.06), (boy * 0.97, 2.4, 0.06),
+             mat_yap("VagonCati", (0.05, 0.05, 0.055), rough=0.6))
+        # kapak cizgileri
+        for k in range(5):
+            px = -boy * 0.36 + k * boy * 0.18
+            kutu(f"{ad}_Kapak{k}", (px, 0, zasa + 1.15),
+                 (0.03, 2.34, 1.79), mat_yap("VagonKapak", (0.09, 0.035, 0.02),
+                                             rough=0.7))
+
+    # tampon kirisleri
+    for xs, yon in ((boy / 2 - 0.06, 1), (-boy / 2 + 0.06, -1)):
+        kutu(f"{ad}_Tampon{xs}", (xs, 0, zasa + 0.10), (0.10, 2.1, 0.26),
+             MAT["KirmiziBoya"])
+        for ys in (0.72, -0.72):
+            silindir(f"{ad}_Buf{xs}{ys}", (xs + yon * 0.16, ys, zasa + 0.10),
+                     0.09, 0.34, celik, eksen="X")
+
+    for o in set(bpy.data.objects) - once:
+        if o.parent is None and o is not kok:
+            o.parent = kok
+    return kok, teker_refs, boy
+
+
+def vagon_pozu(teker_refs, s):
+    """Vagon tekerlerini kaysiz yuvarlat."""
+    aci = s / VAGON_TEKER_R
+    for t in teker_refs.values():
+        t.rotation_euler = (0, aci, 0)
