@@ -272,10 +272,10 @@ def poz(refs, theta):
 def duman_pozu(refs, t, hiz=1.0):
     """Bacadan duman puflari: havuzdaki kureler periyodik yukselir buyur solar."""
     kaynak = (5.15, 0, 4.35)
-    n = len(refs["duman"])
+    adet = len(refs["duman"])
     periyot = 0.55
     for i, p in enumerate(refs["duman"]):
-        faz = ((t / periyot + i / n) % 1.0)
+        faz = ((t / periyot + i / adet) % 1.0)
         yas = faz * 2.4
         p.location = (kaynak[0] - 0.9 * yas * hiz + 0.3 * math.sin(yas * 2 + i),
                       kaynak[1] + 0.4 * math.sin(yas * 1.3 + i * 2),
@@ -284,8 +284,9 @@ def duman_pozu(refs, t, hiz=1.0):
         p.scale = (olcek, olcek, olcek * 0.8)
         m = p.data.materials[0]
         if m.use_nodes:
-            for n in m.node_tree.nodes:
-                if n.type == "VOLUME_PRINCIPLED":
-                    n.inputs["Density"].default_value = 0.85 * (1.0 - faz) ** 1.5
+            for dugum in m.node_tree.nodes:
+                if dugum.type == "VOLUME_PRINCIPLED":
+                    dugum.inputs["Density"].default_value = \
+                        0.85 * (1.0 - faz) ** 1.5
     for p in refs["duman"]:
         p.visible_shadow = False
