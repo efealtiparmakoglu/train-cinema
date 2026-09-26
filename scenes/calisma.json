@@ -1,0 +1,58 @@
+{
+  "output": "renders/calisma.gif",
+  "theta": 0.0,
+  "fon": {
+    "color": [
+      0.01,
+      0.011,
+      0.014
+    ],
+    "strength": 1.0
+  },
+  "zemin": {
+    "color": [
+      0.075,
+      0.075,
+      0.08
+    ],
+    "roughness": 0.45,
+    "metalik": 0.0
+  },
+  "isik": {
+    "ana": 3600,
+    "dolgu": 600,
+    "rim": 2600,
+    "ana_konum": [
+      -4,
+      -12,
+      7
+    ],
+    "mekanik": 1100,
+    "mekanik_konum": [
+      1,
+      -9,
+      0.6
+    ]
+  },
+  "camera": {
+    "position": [
+      -2,
+      -15,
+      1.6
+    ],
+    "look_at": [
+      -1,
+      0,
+      1.1
+    ],
+    "lens": 40,
+    "omega": 6.0
+  },
+  "render": {
+    "width": 1280,
+    "height": 720,
+    "samples": 48,
+    "exposure": 0.4,
+    "look": "Medium High Contrast"
+  }
+}
